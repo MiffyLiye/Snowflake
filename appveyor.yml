@@ -1,0 +1,25 @@
+version: 1.0.{build}
+image: Visual Studio 2017
+configuration:
+- Debug
+- Release
+platform: Any CPU
+build_script:
+- ps: dotnet restore
+- ps: dotnet build -c $env:CONFIGURATION
+test_script:
+- ps: >-
+    if ($env:CONFIGURATION -ne "Release") {
+      nuget.exe install OpenCover -OutputDirectory .\tools\
+
+      .\tools\OpenCover.*\tools\OpenCover.Console.exe -register:user -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test -c Debug .\test\Snowflake.Test\Snowflake.Test.csproj" -filter:"+[MiffyLiye.Snowflake]* -[MiffyLiye.Snowflake].Test*" -output:"coverage.xml" -oldStyle -returntargetcode
+    } else {
+      dotnet test .\test\Snowflake.Test\Snowflake.Test.csproj -c $env:CONFIGURATION
+    }
+after_test:
+- ps: >-
+    if ($env:CONFIGURATION -ne "Release") {
+      nuget.exe install CodeCov -OutputDirectory .\tools\
+
+      .\tools\Codecov.*\tools\codecov.exe -f coverage.xml
+    }
