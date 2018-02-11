@@ -31,7 +31,7 @@ namespace MiffyLiye.Snowflake.Test
             var snowflake = new Snowflake();
             var lastId = snowflake.Next();
 
-            await Task.Delay(TimeSpan.FromSeconds(1));
+            await Task.Delay(TimeSpan.FromSeconds(1)).ConfigureAwait(false);
             var nextId = snowflake.Next();
 
             nextId.Should().BeGreaterThan(lastId);
