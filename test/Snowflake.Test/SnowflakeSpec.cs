@@ -26,12 +26,12 @@ namespace MiffyLiye.Snowflake.Test
         }
 
         [Fact]
-        public async Task should_generate_larger_next_id_when_the_last_id_was_generated_ten_millisecond_ago()
+        public async Task should_generate_larger_next_id_when_the_last_id_was_generated_two_millisecond_ago()
         {
             var snowflake = new Snowflake();
             var lastId = snowflake.Next();
 
-            await Task.Delay(TimeSpan.FromMilliseconds(10)).ConfigureAwait(false);
+            await Task.Delay(TimeSpan.FromMilliseconds(2)).ConfigureAwait(false);
             var nextId = snowflake.Next();
 
             nextId.Should().BeGreaterThan(lastId);
@@ -94,6 +94,16 @@ namespace MiffyLiye.Snowflake.Test
                     var snowflake = new Snowflake(machineId);
                 })).Should().Throw<InvalidOperationException>()
                 .WithMessage($"Machine ID should not be longer than {MachineIdLength} bits.");
+        }
+        
+        [Fact]
+        public void should_generate_positive_number()
+        {
+            var snowflake = new Snowflake();
+            
+            var nextId = snowflake.Next();
+
+            nextId.Should().BeGreaterThan(0);
         }
     }
 }

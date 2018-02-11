@@ -35,7 +35,8 @@ namespace MiffyLiye.Snowflake
             }
 
             TimestampMask = Convert.ToInt64(
-                new string('1', MachineIdOffset) +
+                new string('0', 1) +
+                new string('1', MachineIdOffset - 1) +
                 new string('0', MachineIdLength) +
                 new string('0', 64 - MachineIdOffset - MachineIdLength),
                 2);
@@ -50,7 +51,7 @@ namespace MiffyLiye.Snowflake
 
         public long Next()
         {
-            var idWithOnlyTimeStamp = (DateTime.UtcNow.Ticks << 6) & TimestampMask;
+            var idWithOnlyTimeStamp = (DateTime.UtcNow.Ticks << 8) & TimestampMask;
             var randomBytes = new byte[2];
             Random.GetBytes(randomBytes);
             var idWithOnlyRandomNumber = ((long) BitConverter.ToInt16(randomBytes, 0)) & RandomNumberMask;
