@@ -50,7 +50,7 @@ namespace MiffyLiye.Snowflake
 
         public long Next()
         {
-            var idWithOnlyTimeStamp = DateTime.UtcNow.Ticks & TimestampMask;
+            var idWithOnlyTimeStamp = (DateTime.UtcNow.Ticks << 6) & TimestampMask;
             var randomBytes = new byte[2];
             Random.GetBytes(randomBytes);
             var idWithOnlyRandomNumber = ((long) BitConverter.ToInt16(randomBytes, 0)) & RandomNumberMask;

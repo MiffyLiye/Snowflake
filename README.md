@@ -8,10 +8,12 @@
 
 A simple ID generator inspired by Twitter's snowflake.
 
-## ID layout
-* 42 bits for time ticks
+## ID properties
+* 42 bits for timestamp
 * 10 bits for machine ID
 * 12 bits random number
+* ~6 ms timestamp resolution
+* ~900 years timestamp range
 
 ## Aspirations
 * Make simple things simple

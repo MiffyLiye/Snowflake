@@ -26,12 +26,12 @@ namespace MiffyLiye.Snowflake.Test
         }
 
         [Fact]
-        public async Task should_generate_larger_next_id_when_the_last_id_was_generated_one_second_ago()
+        public async Task should_generate_larger_next_id_when_the_last_id_was_generated_ten_millisecond_ago()
         {
             var snowflake = new Snowflake();
             var lastId = snowflake.Next();
 
-            await Task.Delay(TimeSpan.FromSeconds(1)).ConfigureAwait(false);
+            await Task.Delay(TimeSpan.FromMilliseconds(10)).ConfigureAwait(false);
             var nextId = snowflake.Next();
 
             nextId.Should().BeGreaterThan(lastId);
