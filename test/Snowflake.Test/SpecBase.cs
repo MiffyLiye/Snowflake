@@ -2,13 +2,13 @@ using System;
 
 namespace MiffyLiye.Snowflake.Test
 {
-    public class SpecBase
+    public abstract class SpecBase
     {
         protected int MachineIdOffset { get; }
         protected int MachineIdLength { get; }
         protected long MachineIdMask { get; }
 
-        public SpecBase()
+        protected SpecBase()
         {
             var snowflake = new Snowflake();
             MachineIdOffset = snowflake.MachineIdOffset;

@@ -9,15 +9,15 @@ namespace MiffyLiye.Snowflake
         public int MachineIdLength { get; } = 10;
         private long IdWithOnlyMachineId { get; }
 
-        private long TimeStampMask { get; }
+        private long TimestampMask { get; }
         private long MachineIdMask { get; }
         private long RandomNumberMask { get; }
 
-        private DateTime TimeStampOffset { get; }
+        private DateTime TimestampOffset { get; }
         private IClock Clock { get; }
         private RandomNumberGenerator Random { get; }
 
-        public Snowflake(int machineId = 0, DateTime? timeStampOffset = null, IClock clock = null)
+        public Snowflake(int machineId = 0, DateTime? timestampOffset = null, IClock clock = null)
         {
             MachineIdMask =
                 Convert.ToInt64(
@@ -32,7 +32,7 @@ namespace MiffyLiye.Snowflake
                 throw new InvalidOperationException($"Machine ID should not be longer than {MachineIdLength} bits.");
             }
 
-            TimeStampMask = Convert.ToInt64(
+            TimestampMask = Convert.ToInt64(
                 new string('0', 1) +
                 new string('1', MachineIdOffset - 1) +
                 new string('0', MachineIdLength) +
@@ -45,18 +45,18 @@ namespace MiffyLiye.Snowflake
                     new string('1', 64 - MachineIdOffset - MachineIdLength),
                     2);
 
-            TimeStampOffset = timeStampOffset ?? DateTime.Parse("2014-01-10 08:00:00Z");
+            TimestampOffset = timestampOffset ?? DateTime.Parse("2014-01-10 08:00:00Z");
             Clock = clock ?? new SystemClock();
             Random = RandomNumberGenerator.Create();
         }
 
         public long Next()
         {
-            var idWithOnlyTimeStamp = ((Clock.UtcNow.Ticks - TimeStampOffset.Ticks) << 8) & TimeStampMask;
+            var idWithOnlyTimestamp = ((Clock.UtcNow.Ticks - TimestampOffset.Ticks) << 8) & TimestampMask;
             var randomBytes = new byte[2];
             Random.GetBytes(randomBytes);
             var idWithOnlyRandomNumber = ((long) BitConverter.ToInt16(randomBytes, 0)) & RandomNumberMask;
-            return idWithOnlyTimeStamp | IdWithOnlyMachineId | idWithOnlyRandomNumber;
+            return idWithOnlyTimestamp | IdWithOnlyMachineId | idWithOnlyRandomNumber;
         }
     }
 }

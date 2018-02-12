@@ -14,7 +14,7 @@
     <RepositoryUrl>git@github.com:MiffyLiye/Snowflake.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>id distributed centralized priamry key</PackageTags>
-    <Version>0.4.0</Version>
+    <Version>0.5.0</Version>
     <Description>A unique ID generator.</Description>
     <Copyright>Copyright © 2018 MiffyLiye.</Copyright>
     <PackageLicenseUrl>https://github.com/MiffyLiye/Snowflake/blob/master/LICENSE.txt</PackageLicenseUrl>
