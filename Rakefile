@@ -30,8 +30,7 @@ end
 desc 'Build'
 task :build do
     puts '== Build Started =='
-    ensure_system_success 'dotnet build
-    '
+    ensure_system_success 'dotnet build'
     puts '== Build Finished =='
 end
 
