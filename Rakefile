@@ -2,7 +2,7 @@ task :default => [:list]
 
 def ensure_system_success(command)
     res = system command
-    if !res
+    unless res
         raise
     end
 end
@@ -21,7 +21,7 @@ task :clean do
 end
 
 desc 'Restore packages'
-task :generate do
+task :restore do
     puts '== Restore Started =='
     ensure_system_success "dotnet restore"
     puts '== Restore Finished =='
