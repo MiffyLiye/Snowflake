@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <IsPackable>false</IsPackable>
     <AssemblyName>MiffyLiye.Snowflake.Test</AssemblyName>
     <RootNamespace>MiffyLiye.Snowflake.Test</RootNamespace>
