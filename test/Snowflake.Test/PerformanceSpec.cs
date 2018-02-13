@@ -19,7 +19,7 @@ namespace MiffyLiye.Snowflake.Test
             stopwatch.Start();
             // ReSharper disable once UnusedVariable
             var id = snowflake.Next();
-            var elapsedMilliseconds = stopwatch.ElapsedMilliseconds;
+            var elapsedMilliseconds = stopwatch.Elapsed.TotalMilliseconds;
 
             elapsedMilliseconds.Should().BeLessThan(1);
         }
@@ -35,7 +35,7 @@ namespace MiffyLiye.Snowflake.Test
             stopwatch.Start();
             var tasks = Enumerable.Range(1, 4096).Select(async s => await Task.FromResult(snowflake.Next()).ConfigureAwait(false)).ToArray();
             await Task.WhenAll(tasks);
-            var elapsedSeconds = stopwatch.Elapsed.Seconds;
+            var elapsedSeconds = stopwatch.Elapsed.TotalSeconds;
 
             elapsedSeconds.Should().BeLessThan(1);
             var ids = tasks.Select(t => t.Result).Distinct();
