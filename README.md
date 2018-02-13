@@ -15,6 +15,8 @@ A simple ID generator inspired by Twitter's snowflake.
 * 12 bits random number
 * ~1.6 ms timestamp precision
 * ~114 years timestamp range
+* generate 1 ID in less than 1 ms
+* concurrently generate 4096 unique IDs in less than 1 s
 
 ## Aspirations
 * Make simple things simple
@@ -24,7 +26,7 @@ A simple ID generator inspired by Twitter's snowflake.
 * Portable to Windows, macOS, and Linux
 
 ## Status
-* Support centralized low traffic system
+* Support centralized low traffic system (< 4096 requests per second)
 
 ## Usages
 See test cases.
