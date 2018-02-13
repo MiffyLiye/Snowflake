@@ -33,7 +33,7 @@ namespace MiffyLiye.Snowflake.Test
             var stopwatch = new Stopwatch();
 
             stopwatch.Start();
-            var tasks = Enumerable.Range(1, 4096).Select(async s => await Task.FromResult(snowflake.Next())).ToArray();
+            var tasks = Enumerable.Range(1, 4096).Select(async s => await Task.FromResult(snowflake.Next()).ConfigureAwait(false)).ToArray();
             await Task.WhenAll(tasks);
             var elapsedSeconds = stopwatch.Elapsed.Seconds;
 
