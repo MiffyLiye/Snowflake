@@ -18,13 +18,13 @@ namespace MiffyLiye.Snowflake.Test
                 .Returns(lastTimestamp)
                 .Returns(nextTimestamp);
             var snowflake = new Snowflake(clock: clockMock.Object, timestampOffset: now);
-            
+
             var lastId = snowflake.Next();
             var nextId = snowflake.Next();
 
             nextId.Should().BeGreaterThan(lastId);
         }
-        
+
         [Fact]
         public void should_generate_larger_next_id_when_the_last_id_was_generated_100_years_ago()
         {
@@ -36,7 +36,7 @@ namespace MiffyLiye.Snowflake.Test
                 .Returns(lastTimestamp)
                 .Returns(nextTimestamp);
             var snowflake = new Snowflake(clock: clockMock.Object, timestampOffset: now);
-            
+
             var lastId = snowflake.Next();
             var nextId = snowflake.Next();
 

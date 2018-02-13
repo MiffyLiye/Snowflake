@@ -2,7 +2,7 @@
 
 namespace MiffyLiye.Snowflake
 {
-    public class SystemClock : IClock
+    internal class SystemClock : IClock
     {
         public DateTime UtcNow => DateTime.UtcNow;
     }

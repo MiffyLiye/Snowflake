@@ -15,17 +15,21 @@ namespace MiffyLiye.Snowflake
 
         private DateTime TimestampOffset { get; }
         private IClock Clock { get; }
-        private RandomNumberGenerator Random { get; }
+
+        private object SequenceLocker { get; } = new object();
+        private long SequenceEncryptionKey { get; }
+        private long LastSequence { get; set; }
 
         public Snowflake(int machineId = 0, DateTime? timestampOffset = null, IClock clock = null)
         {
+            LastSequence = 0;
             MachineIdMask =
                 Convert.ToInt64(
                     new string('0', MachineIdOffset) +
                     new string('1', MachineIdLength) +
                     new string('0', 64 - MachineIdOffset - MachineIdLength),
                     2);
-            var idWithOnlyUnmaskedMachineId = (((long) machineId) << (64 - MachineIdOffset - MachineIdLength));
+            var idWithOnlyUnmaskedMachineId = ((long) machineId) << (64 - MachineIdOffset - MachineIdLength);
             IdWithOnlyMachineId = idWithOnlyUnmaskedMachineId & MachineIdMask;
             if (IdWithOnlyMachineId != idWithOnlyUnmaskedMachineId)
             {
@@ -47,15 +51,26 @@ namespace MiffyLiye.Snowflake
 
             TimestampOffset = timestampOffset ?? DateTime.Parse("2014-01-10 08:00:00Z");
             Clock = clock ?? new SystemClock();
-            Random = RandomNumberGenerator.Create();
+            var random = new byte[2];
+            using (var randomNumberGenerator = RandomNumberGenerator.Create())
+            {
+                randomNumberGenerator.GetBytes(random);
+            }
+            SequenceEncryptionKey = BitConverter.ToInt16(random, 0) & RandomNumberMask;
         }
 
         public long Next()
         {
+            long sequence;
+            lock (SequenceLocker)
+            {
+                unchecked
+                {
+                    sequence = ++LastSequence;
+                }
+            }
             var idWithOnlyTimestamp = ((Clock.UtcNow.Ticks - TimestampOffset.Ticks) << 8) & TimestampMask;
-            var randomBytes = new byte[2];
-            Random.GetBytes(randomBytes);
-            var idWithOnlyRandomNumber = ((long) BitConverter.ToInt16(randomBytes, 0)) & RandomNumberMask;
+            var idWithOnlyRandomNumber = (sequence ^ SequenceEncryptionKey) & RandomNumberMask;
             return idWithOnlyTimestamp | IdWithOnlyMachineId | idWithOnlyRandomNumber;
         }
     }
