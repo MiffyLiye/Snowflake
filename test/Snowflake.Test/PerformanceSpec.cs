@@ -25,7 +25,7 @@ namespace MiffyLiye.Snowflake.Test
         }
 
         [Fact]
-        public async Task should_generate_4096_unique_ids_in_less_than_one_second()
+        public void should_generate_4096_unique_ids_in_less_than_100_millisecond()
         {
             var snowflake = new Snowflake();
             // ReSharper disable once UnusedVariable
@@ -33,13 +33,15 @@ namespace MiffyLiye.Snowflake.Test
             var stopwatch = new Stopwatch();
 
             stopwatch.Start();
-            var tasks = Enumerable.Range(1, 4096).Select(async s => await Task.FromResult(snowflake.Next()).ConfigureAwait(false)).ToArray();
-            await Task.WhenAll(tasks);
-            var elapsedSeconds = stopwatch.Elapsed.TotalSeconds;
+            var ids = Enumerable.Range(1, 4096)
+                .Select(i => snowflake.Next())
+                .AsParallel()
+                .ToArray();
+            var elapsed = stopwatch.Elapsed;
 
-            elapsedSeconds.Should().BeLessThan(1);
-            var ids = tasks.Select(t => t.Result).Distinct();
-            ids.Count().Should().Be(4096);
+            elapsed.TotalMilliseconds.Should().BeLessThan(100);
+            var distinctIds = ids.Distinct();
+            distinctIds.Count().Should().Be(4096);
         }
     }
 }

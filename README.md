@@ -26,7 +26,8 @@ A simple ID generator inspired by Twitter's snowflake.
 * Portable to Windows, macOS, and Linux
 
 ## Status
-* Support centralized low traffic system (< 4096 requests per second)
+* Support centralized low traffic system
+* Support distributed high traffic system (< 4096 requests per 100 millisecond per machine)
 
 ## Usages
 See test cases.
