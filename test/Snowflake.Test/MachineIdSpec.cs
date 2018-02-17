@@ -53,7 +53,7 @@ namespace MiffyLiye.Snowflake.Test
             ((Action) (() =>
                 {
                     var snowflake = new Snowflake(machineId);
-                })).Should().Throw<InvalidOperationException>()
+                })).Should().Throw<ArgumentException>()
                 .WithMessage($"Machine ID should not be longer than {MachineIdLength} bits.");
         }
     }

@@ -33,7 +33,7 @@ namespace MiffyLiye.Snowflake
             IdWithOnlyMachineId = idWithOnlyUnmaskedMachineId & MachineIdMask;
             if (IdWithOnlyMachineId != idWithOnlyUnmaskedMachineId)
             {
-                throw new InvalidOperationException($"Machine ID should not be longer than {MachineIdLength} bits.");
+                throw new ArgumentException($"Machine ID should not be longer than {MachineIdLength} bits.");
             }
 
             TimestampMask = Convert.ToInt64(
