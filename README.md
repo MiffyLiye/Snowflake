@@ -13,10 +13,10 @@ A simple ID generator inspired by Twitter's snowflake.
 * 41 bits for timestamp
 * 10 bits for machine ID
 * 12 bits random number
-* ~1.6 ms timestamp precision
-* ~114 years timestamp range
+* ~2 ms timestamp precision
+* ~139 years timestamp range
 * generate 1 ID in less than 1 ms
-* concurrently generate 4096 unique IDs in less than 1 s
+* concurrently generate 4096 unique IDs in less than 0.1 s
 
 ## Aspirations
 * Make simple things simple

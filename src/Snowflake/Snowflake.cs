@@ -56,6 +56,7 @@ namespace MiffyLiye.Snowflake
             {
                 randomNumberGenerator.GetBytes(random);
             }
+
             SequenceEncryptionKey = BitConverter.ToInt16(random, 0) & RandomNumberMask;
         }
 
@@ -69,7 +70,11 @@ namespace MiffyLiye.Snowflake
                     sequence = ++LastSequence;
                 }
             }
-            var idWithOnlyTimestamp = ((Clock.UtcNow.Ticks - TimestampOffset.Ticks) << 8) & TimestampMask;
+
+            var precision = 2; // milliseconds
+            var idWithOnlyTimestamp =
+                (((long) (Clock.UtcNow - TimestampOffset).TotalMilliseconds / precision) << (64 - MachineIdOffset))
+                & TimestampMask;
             var idWithOnlyRandomNumber = (sequence ^ SequenceEncryptionKey) & RandomNumberMask;
             return idWithOnlyTimestamp | IdWithOnlyMachineId | idWithOnlyRandomNumber;
         }
