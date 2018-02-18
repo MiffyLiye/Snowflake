@@ -21,7 +21,12 @@ namespace MiffyLiye.Snowflake.Test
             var id = snowflake.Next();
             var elapsedMilliseconds = stopwatch.Elapsed.TotalMilliseconds;
 
-            elapsedMilliseconds.Should().BeLessThan(1);
+#if DEBUG
+            var limit = 3;
+#else
+            var limit = 1;
+#endif
+            elapsedMilliseconds.Should().BeLessThan(limit);
         }
 
         [Fact]
@@ -39,7 +44,12 @@ namespace MiffyLiye.Snowflake.Test
                 .ToArray();
             var elapsed = stopwatch.Elapsed;
 
-            elapsed.TotalMilliseconds.Should().BeLessThan(100);
+#if DEBUG
+            var limit = 200;
+#else
+            var limit = 100;
+#endif
+            elapsed.TotalMilliseconds.Should().BeLessThan(limit);
             var distinctIds = ids.Distinct();
             distinctIds.Count().Should().Be(4096);
         }
