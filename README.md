@@ -1,9 +1,8 @@
 # Snowflake
 [![AppVeyor branch](https://img.shields.io/appveyor/ci/MiffyLiye/Snowflake/master.svg?style=flat-square&label=windows%20build)](https://ci.appveyor.com/project/MiffyLiye/snowflake/branch/master)
 [![Travis branch](https://img.shields.io/travis/MiffyLiye/Snowflake/master.svg?style=flat-square&label=linux%20build)](https://travis-ci.org/MiffyLiye/Snowflake)
-[![AppVeyor tests branch](https://img.shields.io/appveyor/tests/MiffyLiye/Snowflake/master.svg?style=flat-square)](https://ci.appveyor.com/project/MiffyLiye/snowflake/branch/master)
 [![Codecov branch](https://img.shields.io/codecov/c/github/MiffyLiye/Snowflake/master.svg?style=flat-square)](https://codecov.io/gh/MiffyLiye/Snowflake)
-[![Codacy branch grade](https://img.shields.io/codacy/grade/8568d054474f48aca7c900aa099ab4ac/master.svg?style=flat-square)](https://www.codacy.com/app/miffyliye/Snowflake?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=MiffyLiye/Snowflake&amp;utm_campaign=Badge_Grade)
+
 [![NuGet](https://img.shields.io/nuget/v/MiffyLiye.Snowflake.svg?style=flat-square)](https://www.nuget.org/packages/MiffyLiye.Snowflake/)
 [![Libraries.io for GitHub](https://img.shields.io/librariesio/github/MiffyLiye/Snowflake.svg?style=flat-square)](https://libraries.io/github/MiffyLiye/Snowflake)
 
