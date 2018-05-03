@@ -81,7 +81,6 @@ namespace MiffyLiye.Snowflake
                 throw new InvalidOperationException("ID will overflow in less than 10 years.");
             }
 
-            long idWithOnlyTimestamp;
             long sequence;
             lock (Locker)
             {
@@ -95,15 +94,14 @@ namespace MiffyLiye.Snowflake
                     now = LastTimestamp;
                 }
 
-                idWithOnlyTimestamp =
-                    (((long) (now - TimestampOffset).TotalMilliseconds / Precision) << (64 - MachineIdOffset))
-                    & TimestampMask;
-
                 unchecked
                 {
                     sequence = LastSequence++;
                 }
             }
+            
+            var idWithOnlyTimestamp = (((long) (now - TimestampOffset).TotalMilliseconds / Precision) << (64 - MachineIdOffset))
+                                       & TimestampMask;
 
             var idWithOnlyRandomNumber = (sequence ^ SequenceEncryptionKey) & RandomNumberMask;
             return idWithOnlyTimestamp | IdWithOnlyMachineId | idWithOnlyRandomNumber;
