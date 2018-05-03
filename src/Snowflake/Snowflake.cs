@@ -15,11 +15,12 @@ namespace MiffyLiye.Snowflake
 
         private bool IgnoreWarning { get; }
         private int Precision { get; } = 2; // milliseconds
+        private DateTime LastTimestamp { get; set; }
         private DateTime TimestampWarningThreshold { get; }
         private DateTime TimestampOffset { get; }
         private IClock Clock { get; }
 
-        private object SequenceLocker { get; } = new object();
+        private object Locker { get; } = new object();
         private long SequenceEncryptionKey { get; }
         private long LastSequence { get; set; }
 
@@ -58,6 +59,7 @@ namespace MiffyLiye.Snowflake
                     2);
 
             TimestampOffset = timestampOffset ?? DateTime.Parse("2014-01-10 08:00:00Z");
+            LastTimestamp = TimestampOffset;
             TimestampWarningThreshold = TimestampOffset
                 .AddMilliseconds(Precision * Math.Pow(2, MachineIdOffset - 1))
                 .AddYears(-10);
@@ -79,16 +81,27 @@ namespace MiffyLiye.Snowflake
                 throw new InvalidOperationException("ID will overflow in less than 10 years.");
             }
 
-            var idWithOnlyTimestamp =
-                (((long) (now - TimestampOffset).TotalMilliseconds / Precision) << (64 - MachineIdOffset))
-                & TimestampMask;
-
+            long idWithOnlyTimestamp;
             long sequence;
-            lock (SequenceLocker)
+            lock (Locker)
             {
+                if (LastTimestamp < now)
+                {
+                    LastTimestamp = now;
+                }
+
+                if (now < LastTimestamp)
+                {
+                    now = LastTimestamp;
+                }
+
+                idWithOnlyTimestamp =
+                    (((long) (now - TimestampOffset).TotalMilliseconds / Precision) << (64 - MachineIdOffset))
+                    & TimestampMask;
+
                 unchecked
                 {
-                    sequence = ++LastSequence;
+                    sequence = LastSequence++;
                 }
             }
 
